@@ -10,151 +10,160 @@
 <meta name="apple-mobile-web-app-title" content="質押監控">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background:#f3f4f6; color:#111; font-family:-apple-system,'Noto Sans TC',sans-serif; font-size:14px; min-height:100vh; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#f3f4f6;color:#111;font-family:-apple-system,'Noto Sans TC',sans-serif;font-size:14px;min-height:100vh;}
 
-/* ── Topbar ── */
-.topbar { background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:100; box-shadow:0 1px 4px rgba(0,0,0,.06); }
-.topbar-inner { max-width:900px; margin:0 auto; display:flex; align-items:stretch; padding:0 14px; }
-.app-title { font-size:14px; font-weight:700; padding:14px 14px 14px 0; color:#111; white-space:nowrap; border-right:1px solid #f0f0f0; margin-right:6px; }
-.tabs { display:flex; gap:2px; flex:1; }
-.tab { padding:14px 16px; font-size:13px; font-weight:500; color:#aaa; cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; white-space:nowrap; position:relative; }
-.tab:hover { color:#555; }
-.tab.active { color:#3b82f6; border-bottom-color:#3b82f6; }
-.tab .dot { position:absolute; top:10px; right:8px; width:7px; height:7px; border-radius:50%; background:#ef4444; display:none; }
-.tab .dot.show { display:block; }
-.save-info { font-size:11px; color:#bbb; font-family:monospace; display:flex; align-items:center; gap:4px; padding-left:8px; white-space:nowrap; }
-.save-dot { width:5px; height:5px; border-radius:50%; background:#16a34a; animation:pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+/* Topbar */
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:stretch;padding:0 14px;}
+.app-title{font-size:14px;font-weight:700;padding:14px 14px 14px 0;color:#111;white-space:nowrap;border-right:1px solid #f0f0f0;margin-right:6px;}
+.tabs{display:flex;gap:2px;flex:1;}
+.tab{padding:14px 16px;font-size:13px;font-weight:500;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;position:relative;}
+.tab.active{color:#3b82f6;border-bottom-color:#3b82f6;}
+.tab .dot{position:absolute;top:10px;right:8px;width:7px;height:7px;border-radius:50%;background:#ef4444;display:none;}
+.tab .dot.show{display:block;}
+.save-info{font-size:11px;color:#bbb;display:flex;align-items:center;gap:4px;padding-left:8px;white-space:nowrap;}
+.save-dot{width:5px;height:5px;border-radius:50%;background:#16a34a;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── Page ── */
-.page { display:none; padding:16px 14px 60px; max-width:900px; margin:0 auto; flex-direction:column; gap:10px; }
-.page.active { display:flex; }
+/* Page */
+.page{display:none;padding:12px 14px 60px;max-width:900px;margin:0 auto;flex-direction:column;gap:10px;}
+.page.active{display:flex;}
 
-/* ── Install banner ── */
-.install-banner { display:none; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:11px 14px; align-items:center; gap:10px; }
-.install-banner.show { display:flex; }
-.install-banner p { flex:1; font-size:12px; color:#1d4ed8; }
-.install-banner p b { font-weight:600; }
-.btn-install { background:#3b82f6; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
-.btn-dismiss { background:none; border:none; color:#93c5fd; cursor:pointer; font-size:16px; }
+/* Install */
+.install-banner{display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;align-items:center;gap:10px;}
+.install-banner.show{display:flex;}
+.install-banner p{flex:1;font-size:12px;color:#1d4ed8;}
+.install-banner p b{font-weight:600;}
+.btn-install{background:#3b82f6;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;}
+.btn-dismiss{background:none;border:none;color:#93c5fd;cursor:pointer;font-size:16px;}
 
-/* ── Alert ── */
-.alert-banner { display:none; border-radius:10px; padding:11px 14px; align-items:flex-start; gap:10px; }
-.alert-banner.show { display:flex; }
-.alert-banner.warn { background:#fff7ed; border:1px solid #fed7aa; }
-.alert-banner.danger { background:#fef2f2; border:1px solid #fecaca; }
-.alert-icon { font-size:18px; flex-shrink:0; }
-.alert-text .alert-title { font-size:13px; font-weight:600; color:#b45309; }
-.alert-banner.danger .alert-title { color:#b91c1c; }
-.alert-text .alert-desc { font-size:12px; color:#92400e; margin-top:2px; }
-.alert-banner.danger .alert-desc { color:#991b1b; }
+/* ══ 風險儀表板（最上方） ══ */
+.risk-panel{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
+.risk-panel.danger{border-color:#fca5a5;background:#fff5f5;}
+.risk-panel.warn{border-color:#fcd34d;background:#fffbeb;}
+.risk-panel.safe{border-color:#86efac;background:#f0fdf4;}
 
-/* ── Card ── */
-.card { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:13px 15px; }
-.card-title { font-size:10px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:#aaa; margin-bottom:10px; }
+.risk-header{padding:12px 15px 10px;border-bottom:1px solid rgba(0,0,0,.06);}
+.risk-header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.risk-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;}
+.risk-status{font-size:12px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.risk-status.safe{background:#dcfce7;color:#15803d;}
+.risk-status.warn{background:#fef9c3;color:#854d0e;}
+.risk-status.danger{background:#fee2e2;color:#991b1b;}
 
-/* ── Fields ── */
-.row { display:flex; gap:8px; flex-wrap:wrap; }
-.field { flex:1; min-width:120px; }
-.field label { display:block; font-size:11px; color:#888; margin-bottom:4px; }
-input[type=number],input[type=text] {
-  width:100%; border:1px solid #e0e0e0; border-radius:6px;
-  padding:7px 10px; font-size:14px; font-family:monospace;
-  color:#111; background:#fafafa; outline:none; transition:border-color .15s;
-}
-input:focus { border-color:#3b82f6; background:#fff; }
-input::placeholder { color:#d0d0d0; font-family:inherit; }
+.risk-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#f0f0f0;}
+.risk-cell{background:#fff;padding:11px 12px;}
+.risk-panel.danger .risk-cell{background:#fff5f5;}
+.risk-panel.warn .risk-cell{background:#fffbeb;}
+.risk-panel.safe .risk-cell{background:#f0fdf4;}
+.risk-label{font-size:10px;color:#aaa;margin-bottom:3px;}
+.risk-val{font-size:18px;font-weight:700;font-family:monospace;line-height:1.1;}
+.risk-sub{font-size:10px;color:#aaa;margin-top:2px;}
+.c-green{color:#16a34a;}.c-red{color:#dc2626;}.c-orange{color:#d97706;}.c-blue{color:#3b82f6;}.c-gray{color:#9ca3af;}
 
-.divider { border:none; border-top:1px solid #f0f0f0; margin:10px 0; }
-.thresh-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12px; color:#888; }
-.thresh-input { width:65px !important; font-size:13px !important; padding:5px 8px !important; }
+/* 到期倒數 bar */
+.expiry-bar-wrap{padding:8px 15px 12px;}
+.expiry-bar-label{display:flex;justify-content:space-between;font-size:10px;color:#aaa;margin-bottom:5px;}
+.expiry-track{height:5px;background:#e5e7eb;border-radius:99px;overflow:hidden;}
+.expiry-fill{height:100%;border-radius:99px;transition:width .4s,background .3s;}
 
-/* ── Summary cards ── */
-.summary { display:flex; gap:8px; flex-wrap:wrap; }
-.stat { flex:1; min-width:95px; background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:9px 11px; }
-.stat-label { font-size:10px; color:#aaa; margin-bottom:2px; }
-.stat-value { font-size:16px; font-weight:700; font-family:monospace; color:#111; line-height:1.2; }
-.stat-sub { font-size:10px; color:#aaa; margin-top:2px; }
-.c-blue{color:#3b82f6}.c-green{color:#16a34a}.c-red{color:#dc2626}.c-orange{color:#d97706}.c-purple{color:#7c3aed}
+/* Alert banner */
+.alert-banner{display:none;border-radius:10px;padding:10px 13px;align-items:flex-start;gap:10px;}
+.alert-banner.show{display:flex;}
+.alert-banner.warn{background:#fff7ed;border:1px solid #fed7aa;}
+.alert-banner.danger{background:#fef2f2;border:1px solid #fecaca;}
+.alert-icon{font-size:18px;flex-shrink:0;}
+.alert-text .alert-title{font-size:13px;font-weight:600;color:#b45309;}
+.alert-banner.danger .alert-title{color:#b91c1c;}
+.alert-text .alert-desc{font-size:12px;color:#92400e;margin-top:2px;line-height:1.5;}
+.alert-banner.danger .alert-desc{color:#991b1b;}
 
-/* ── Return summary box ── */
-.return-box {
-  background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:13px 15px;
-}
-.return-box .rb-title { font-size:10px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:#aaa; margin-bottom:10px; }
-.rb-grid { display:flex; gap:8px; flex-wrap:wrap; }
-.rb-item { flex:1; min-width:130px; border-radius:8px; padding:9px 12px; }
-.rb-item.gross { background:#f0fdf4; border:1px solid #bbf7d0; }
-.rb-item.net   { background:#faf5ff; border:1px solid #e9d5ff; }
-.rb-item.loss  { background:#fef2f2; border:1px solid #fecaca; }
-.rb-label { font-size:10px; color:#aaa; margin-bottom:3px; }
-.rb-value { font-size:18px; font-weight:700; font-family:monospace; }
-.rb-sub   { font-size:11px; color:#aaa; margin-top:2px; }
+/* Summary row */
+.summary{display:flex;gap:8px;flex-wrap:wrap;}
+.stat{flex:1;min-width:90px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 11px;}
+.stat-label{font-size:10px;color:#aaa;margin-bottom:2px;}
+.stat-value{font-size:15px;font-weight:700;font-family:monospace;color:#111;line-height:1.2;}
+.stat-sub{font-size:10px;color:#aaa;margin-top:2px;}
 
-/* ── Util bar ── */
-.util { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px 13px; }
-.util-head { display:flex; justify-content:space-between; margin-bottom:6px; font-size:11px; color:#aaa; }
-.util-head b { font-family:monospace; font-weight:700; }
-.util-track { height:6px; background:#f0f0f0; border-radius:99px; overflow:hidden; }
-.util-fill { height:100%; border-radius:99px; transition:width .4s,background .3s; }
+/* Util bar */
+.util{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 13px;}
+.util-head{display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px;color:#aaa;}
+.util-head b{font-family:monospace;font-weight:700;}
+.util-track{height:5px;background:#f0f0f0;border-radius:99px;overflow:hidden;}
+.util-fill{height:100%;border-radius:99px;transition:width .4s,background .3s;}
 
-/* ── Add form ── */
-.add-form { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; }
-.add-form .field { flex:1; min-width:100px; }
-.btn-add { background:#111; color:#fff; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; transition:background .15s; flex-shrink:0; }
-.btn-add:hover { background:#3b82f6; }
+/* 報酬分析（可折疊） */
+.section-toggle{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 15px;cursor:pointer;user-select:none;}
+.section-toggle span{font-size:13px;font-weight:500;color:#555;}
+.section-toggle .arrow{font-size:11px;color:#aaa;transition:transform .2s;}
+.section-toggle.open .arrow{transform:rotate(180deg);}
+.section-body{display:none;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;padding:12px 15px;}
+.section-body.open{display:block;}
+.rb-grid{display:flex;gap:8px;flex-wrap:wrap;}
+.rb-item{flex:1;min-width:120px;border-radius:8px;padding:9px 12px;}
+.rb-item.gross{background:#f0fdf4;border:1px solid #bbf7d0;}
+.rb-item.net{background:#faf5ff;border:1px solid #e9d5ff;}
+.rb-item.loss{background:#fef2f2;border:1px solid #fecaca;}
+.rb-item.neutral{background:#f0f6ff;border:1px solid #bfdbfe;}
+.rb-label{font-size:10px;color:#aaa;margin-bottom:3px;}
+.rb-value{font-size:17px;font-weight:700;font-family:monospace;}
+.rb-sub{font-size:10px;color:#aaa;margin-top:2px;}
 
-/* ── Table ── */
-.table-wrap { background:#fff; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden; }
-.tscroll { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:580px; }
-thead th { font-size:10px; color:#bbb; letter-spacing:1px; text-transform:uppercase; padding:8px 11px; text-align:right; font-weight:500; background:#fafafa; border-bottom:1px solid #f0f0f0; }
-thead th:first-child { text-align:left; }
-tbody tr { border-bottom:1px solid #f5f5f5; transition:background .1s; }
-tbody tr:hover { background:#fafcff; }
-tbody tr:last-child { border-bottom:none; }
-td { padding:8px 11px; text-align:right; color:#555; vertical-align:middle; font-size:13px; }
-td:first-child { text-align:left; color:#111; font-weight:500; }
+/* 設定（可折疊） */
+.settings-toggle{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 15px;cursor:pointer;user-select:none;}
+.settings-toggle span{font-size:13px;font-weight:500;color:#555;}
+.settings-toggle .arrow{font-size:11px;color:#aaa;transition:transform .2s;}
+.settings-toggle.open .arrow{transform:rotate(180deg);}
+.settings-body{display:none;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;padding:13px 15px;flex-direction:column;gap:10px;}
+.settings-body.open{display:flex;}
+.card-title{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#aaa;margin-bottom:8px;}
+.row{display:flex;gap:8px;flex-wrap:wrap;}
+.field{flex:1;min-width:120px;}
+.field label{display:block;font-size:11px;color:#888;margin-bottom:4px;}
+input[type=number],input[type=text],input[type=date]{width:100%;border:1px solid #e0e0e0;border-radius:6px;padding:7px 10px;font-size:14px;font-family:monospace;color:#111;background:#fafafa;outline:none;transition:border-color .15s;}
+input:focus{border-color:#3b82f6;background:#fff;}
+input::placeholder{color:#d0d0d0;font-family:inherit;}
+.divider{border:none;border-top:1px solid #f0f0f0;margin:8px 0;}
+.thresh-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#888;}
+.thresh-input{width:60px !important;font-size:13px !important;padding:5px 8px !important;}
 
-.price-cell { display:flex; align-items:center; justify-content:flex-end; }
-.editable { font-family:monospace; font-size:13px; color:#111; cursor:pointer; padding:3px 6px; border-radius:4px; border:1px solid transparent; transition:all .15s; min-width:55px; text-align:right; display:inline-block; }
-.editable:hover { border-color:#d0e4ff; background:#f0f6ff; }
-.editable.editing { display:none; }
-.edit-input { font-family:monospace; font-size:13px; color:#111; border:1px solid #3b82f6; border-radius:4px; background:#fff; padding:3px 6px; width:72px; text-align:right; outline:none; display:none; }
-.edit-input.editing { display:inline-block; }
+/* 新增表單 */
+.add-form{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;}
+.add-form .field{flex:1;min-width:100px;}
+.btn-add{background:#111;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;flex-shrink:0;}
+.btn-add:hover{background:#3b82f6;}
 
-.badge { display:inline-block; padding:2px 6px; border-radius:4px; font-size:11px; font-family:monospace; font-weight:600; background:#eff6ff; color:#3b82f6; }
-.pos{color:#16a34a}.neg{color:#dc2626}.muted{color:#ccc}
-.btn-del { background:none; border:1px solid #fecaca; color:#dc2626; border-radius:4px; padding:3px 8px; cursor:pointer; font-size:11px; transition:all .1s; }
-.btn-del:hover { background:#fff0f0; border-color:#dc2626; }
-tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:700; color:#111; background:#fafafa; border-top:1px solid #f0f0f0; }
-.tbl-head-row { display:flex; justify-content:space-between; align-items:center; padding:8px 13px; border-bottom:1px solid #f0f0f0; }
-.tbl-head-row span { font-size:10px; color:#bbb; letter-spacing:1px; text-transform:uppercase; }
-.col-hint { font-size:10px; color:#bbb; font-weight:400; letter-spacing:0; text-transform:none; }
-.empty { text-align:center; padding:28px; color:#ccc; font-size:13px; }
-
-/* ── Notif ── */
-.notif-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12px; color:#888; }
-.btn-notif { background:none; border:1px solid #e0e0e0; border-radius:6px; padding:5px 12px; font-size:12px; color:#555; cursor:pointer; transition:all .15s; }
-.btn-notif:hover { border-color:#3b82f6; color:#3b82f6; }
-.btn-notif.granted { border-color:#bbf7d0; color:#16a34a; background:#f0fdf4; cursor:default; }
-
-.note { text-align:center; font-size:11px; color:#ccc; }
-
-/* ── 維持率 ── */
-.maint-box { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:13px 15px; }
-.maint-inner { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
-.maint-label { font-size:10px; color:#aaa; margin-bottom:4px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
-.maint-value { font-size:26px; font-weight:700; font-family:monospace; line-height:1; }
-.maint-sub { font-size:11px; color:#aaa; margin-top:4px; }
-.maint-bar-wrap { flex:1; min-width:160px; }
-.maint-track { height:8px; background:#f0f0f0; border-radius:99px; overflow:hidden; margin-bottom:6px; }
-.maint-fill { height:100%; border-radius:99px; transition:width .4s, background .3s; }
-.maint-hint { font-size:11px; color:#aaa; }
-.maint-box.safe { border-color:#bbf7d0; background:#f0fdf4; }
-.maint-box.warn { border-color:#fed7aa; background:#fff7ed; }
-.maint-box.danger { border-color:#fecaca; background:#fef2f2; }
+/* 表格 */
+.table-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;}
+.tscroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:520px;}
+thead th{font-size:10px;color:#bbb;letter-spacing:1px;text-transform:uppercase;padding:7px 10px;text-align:right;font-weight:500;background:#fafafa;border-bottom:1px solid #f0f0f0;}
+thead th:first-child{text-align:left;}
+tbody tr{border-bottom:1px solid #f5f5f5;transition:background .1s;}
+tbody tr:hover{background:#fafcff;}
+tbody tr:last-child{border-bottom:none;}
+td{padding:8px 10px;text-align:right;color:#555;vertical-align:middle;font-size:13px;}
+td:first-child{text-align:left;color:#111;font-weight:500;}
+.price-cell{display:flex;align-items:center;justify-content:flex-end;}
+.editable{font-family:monospace;font-size:13px;color:#111;cursor:pointer;padding:2px 5px;border-radius:4px;border:1px solid transparent;transition:all .15s;min-width:52px;text-align:right;display:inline-block;}
+.editable:hover{border-color:#d0e4ff;background:#f0f6ff;}
+.editable.editing{display:none;}
+.edit-input{font-family:monospace;font-size:13px;color:#111;border:1px solid #3b82f6;border-radius:4px;background:#fff;padding:2px 5px;width:68px;text-align:right;outline:none;display:none;}
+.edit-input.editing{display:inline-block;}
+.badge{display:inline-block;padding:2px 6px;border-radius:4px;font-size:11px;font-family:monospace;font-weight:600;background:#eff6ff;color:#3b82f6;}
+.pos{color:#16a34a;}.neg{color:#dc2626;}.muted{color:#ccc;}
+.btn-del{background:none;border:1px solid #fecaca;color:#dc2626;border-radius:4px;padding:2px 7px;cursor:pointer;font-size:11px;}
+.btn-del:hover{background:#fff0f0;}
+tfoot td{padding:8px 10px;font-family:monospace;font-size:12px;font-weight:700;color:#111;background:#fafafa;border-top:1px solid #f0f0f0;}
+.tbl-head-row{display:flex;justify-content:space-between;align-items:center;padding:8px 13px;border-bottom:1px solid #f0f0f0;}
+.tbl-head-row span{font-size:10px;color:#bbb;letter-spacing:1px;text-transform:uppercase;}
+.col-hint{font-size:10px;color:#bbb;font-weight:400;letter-spacing:0;text-transform:none;}
+.empty{text-align:center;padding:24px;color:#ccc;font-size:13px;}
+.notif-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#888;}
+.btn-notif{background:none;border:1px solid #e0e0e0;border-radius:6px;padding:5px 12px;font-size:12px;color:#555;cursor:pointer;}
+.btn-notif.granted{border-color:#bbf7d0;color:#16a34a;background:#f0fdf4;cursor:default;}
+.note{text-align:center;font-size:11px;color:#ccc;}
 </style>
 </head>
 <body>
@@ -170,8 +179,7 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
   </div>
 </div>
 
-<!-- 安裝橫幅 -->
-<div style="max-width:900px;margin:0 auto;padding:12px 14px 0">
+<div style="max-width:900px;margin:0 auto;padding:10px 14px 0">
   <div class="install-banner" id="installBanner">
     <p>📲 <b>安裝到主畫面</b>，手機桌面直接開啟</p>
     <button class="btn-install" onclick="installApp()">安裝</button>
@@ -181,86 +189,74 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
 
 <!-- ══ 新光證券 ══ -->
 <div class="page active" id="page-0">
+
+  <!-- 1. 警示橫幅 -->
   <div class="alert-banner" id="alert-0"></div>
 
-  <div class="card">
-    <div class="card-title">質押設定 — 新光證券</div>
-    <div class="row">
-      <div class="field"><label>質押標的</label><input type="text" id="p0-pledge" placeholder="台積電 2330" oninput="saveAndCalc(0)"></div>
-      <div class="field"><label>借貸金額（元）</label><input type="number" id="p0-loan" placeholder="600000" oninput="saveAndCalc(0)"></div>
-      <div class="field"><label>年利率（%）</label><input type="number" id="p0-rate" placeholder="3.5" step="0.1" oninput="saveAndCalc(0)"></div>
-      <div class="field"><label>借貸起始日</label><input type="date" id="p0-startDate" oninput="onDateChange(0)"></div>
-      <div class="field"><label>借貸天數 <span style="color:#bbb;font-size:10px">（自動計算）</span></label><input type="number" id="p0-days" placeholder="自動" oninput="saveAndCalc(0)"></div>
+  <!-- 2. 風險儀表板 -->
+  <div class="risk-panel" id="p0-riskPanel">
+    <div class="risk-header">
+      <div class="risk-header-top">
+        <span class="risk-title">風險儀表板 — 新光證券</span>
+        <span class="risk-status" id="p0-riskStatus">—</span>
+      </div>
     </div>
-    <hr class="divider">
-    <div class="row">
-      <div class="field"><label>質押品股數</label><input type="number" id="p0-colShares" placeholder="例：1000" step="1" min="1" oninput="saveAndCalc(0)"></div>
-      <div class="field"><label>質押品現價（元）<span style="color:#bbb;font-size:10px"> 點擊更新</span></label><input type="number" id="p0-colPrice" placeholder="例：950" step="0.1" oninput="saveAndCalc(0)"></div>
+    <div class="risk-grid">
+      <div class="risk-cell">
+        <div class="risk-label">質押維持率</div>
+        <div class="risk-val" id="p0-maintVal">—</div>
+        <div class="risk-sub" id="p0-maintSub">填入質押品資訊</div>
+      </div>
+      <div class="risk-cell">
+        <div class="risk-label">追繳警戒價</div>
+        <div class="risk-val" id="p0-triggerPrice">—</div>
+        <div class="risk-sub" id="p0-triggerSub">跌破即追繳</div>
+      </div>
+      <div class="risk-cell">
+        <div class="risk-label">借貸到期</div>
+        <div class="risk-val" id="p0-expDays">—</div>
+        <div class="risk-sub" id="p0-expDate">未設定到期日</div>
+      </div>
     </div>
-    <hr class="divider">
-    <div class="thresh-row">
-      <span>🔔 警示閾值：使用率超過</span>
-      <input type="number" class="thresh-input" id="p0-thresh" value="85" min="1" max="100" oninput="saveAndCalc(0)">
-      <span>%</span>
+    <div class="expiry-bar-wrap" id="p0-expBarWrap" style="display:none">
+      <div class="expiry-bar-label">
+        <span id="p0-expStart">借貸起始</span>
+        <span id="p0-expEnd">到期日</span>
+      </div>
+      <div class="expiry-track"><div class="expiry-fill" id="p0-expFill"></div></div>
     </div>
   </div>
 
-  <!-- 維持率 -->
-  <div class="maint-box" id="p0-maintBox" style="display:none">
-    <div class="maint-inner">
-      <div>
-        <div class="maint-label">質押品維持率</div>
-        <div class="maint-value" id="p0-maintVal">—</div>
-        <div class="maint-sub" id="p0-maintSub"></div>
-      </div>
-      <div class="maint-bar-wrap">
-        <div class="maint-markers">
-          <span style="left:0">0%</span>
-          <span style="left:calc(120%/3)">120%</span>
-          <span style="left:calc(130%/3)">130%</span>
-          <span style="right:0">300%+</span>
-        </div>
-        <div class="maint-track"><div class="maint-fill" id="p0-maintFill"></div></div>
-        <div class="maint-hint" id="p0-maintHint"></div>
-      </div>
-    </div>
-  </div>
-
+  <!-- 3. 資金摘要 -->
   <div class="summary">
     <div class="stat"><div class="stat-label">借貸金額</div><div class="stat-value c-blue" id="p0-sLoan">—</div></div>
     <div class="stat"><div class="stat-label">已投入</div><div class="stat-value" id="p0-sInvested">—</div><div class="stat-sub" id="p0-sInvestedPct"></div></div>
     <div class="stat"><div class="stat-label">剩餘水位</div><div class="stat-value" id="p0-sRemain">—</div><div class="stat-sub" id="p0-sRemainPct"></div></div>
     <div class="stat"><div class="stat-label">持倉損益</div><div class="stat-value" id="p0-sPnl">—</div><div class="stat-sub" id="p0-sPnlPct"></div></div>
-    <div class="stat" id="p0-sIntCard" style="display:none"><div class="stat-label">累計利息 <span id="p0-sDays" style="color:#bbb;font-size:10px"></span></div><div class="stat-value c-orange" id="p0-sInt">—</div><div class="stat-sub" id="p0-sNet"></div></div>
+    <div class="stat" id="p0-sIntCard" style="display:none"><div class="stat-label">累計利息<span id="p0-sDays" style="color:#bbb;font-size:10px;margin-left:3px"></span></div><div class="stat-value c-orange" id="p0-sInt">—</div><div class="stat-sub" id="p0-sNet"></div></div>
   </div>
 
+  <!-- 4. 資金使用率 -->
   <div class="util">
     <div class="util-head"><span>資金使用率</span><b id="p0-utilPct">0%</b></div>
     <div class="util-track"><div class="util-fill" id="p0-utilFill" style="width:0%"></div></div>
   </div>
 
-  <!-- 報酬區 -->
-  <div class="return-box" id="p0-returnBox" style="display:none">
-    <div class="rb-title">報酬分析</div>
-    <div class="rb-grid">
-      <div class="rb-item gross">
-        <div class="rb-label">持倉毛利</div>
-        <div class="rb-value c-green" id="p0-rbGross">—</div>
-        <div class="rb-sub" id="p0-rbGrossPct"></div>
-      </div>
-      <div class="rb-item" id="p0-rbNetItem">
-        <div class="rb-label">扣除利息後淨利</div>
-        <div class="rb-value" id="p0-rbNet">—</div>
-        <div class="rb-sub" id="p0-rbNetPct"></div>
-      </div>
-      <div class="rb-item" style="background:#f0f6ff;border:1px solid #bfdbfe">
-        <div class="rb-label">年化報酬率（持倉）</div>
-        <div class="rb-value c-blue" id="p0-rbAnnual">—</div>
-        <div class="rb-sub" id="p0-rbAnnualNote"></div>
+  <!-- 5. 報酬分析（可折疊） -->
+  <div>
+    <div class="section-toggle" id="p0-retToggle" onclick="toggleSection('p0-ret')" style="border-radius:10px 10px 0 0;border-bottom:none;display:none">
+      <span>📈 報酬分析</span><span class="arrow">▼</span>
+    </div>
+    <div class="section-body" id="p0-retBody">
+      <div class="rb-grid">
+        <div class="rb-item gross"><div class="rb-label">持倉毛利</div><div class="rb-value c-green" id="p0-rbGross">—</div><div class="rb-sub" id="p0-rbGrossPct"></div></div>
+        <div class="rb-item" id="p0-rbNetItem" style="display:none"><div class="rb-label">扣除利息淨利</div><div class="rb-value" id="p0-rbNet">—</div><div class="rb-sub" id="p0-rbNetPct"></div></div>
+        <div class="rb-item neutral"><div class="rb-label">年化報酬率</div><div class="rb-value c-blue" id="p0-rbAnnual">—</div><div class="rb-sub" id="p0-rbAnnualNote"></div></div>
       </div>
     </div>
   </div>
 
+  <!-- 6. 新增持倉 -->
   <div class="add-form">
     <div class="field"><label>ETF 名稱／代號</label><input type="text" id="p0-iName" placeholder="0050"></div>
     <div class="field"><label>買進成本（元）</label><input type="number" id="p0-iCost" placeholder="185.50" step="0.01"></div>
@@ -270,17 +266,16 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
     <button class="btn-add" onclick="addStock(0)">＋ 新增</button>
   </div>
 
+  <!-- 7. 持倉表格 -->
   <div class="table-wrap">
     <div class="tbl-head-row"><span>持倉明細</span><span id="p0-holdCount">0 筆</span></div>
     <div class="tscroll">
       <table>
         <thead><tr>
-          <th style="text-align:left">ETF</th>
-          <th>成本</th>
+          <th style="text-align:left">ETF</th><th>成本</th>
           <th>現價<span class="col-hint">（點擊更新）</span></th>
           <th>股數<span class="col-hint">（點擊修改）</span></th>
-          <th>投入金額</th><th>現值</th>
-          <th>損益</th><th>年化%</th><th>佔借貸</th><th></th>
+          <th>投入</th><th>現值</th><th>損益</th><th>年化%</th><th>佔借貸</th><th></th>
         </tr></thead>
         <tbody id="p0-tbody"></tbody>
         <tfoot id="p0-tfoot"></tfoot>
@@ -288,54 +283,84 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">通知設定</div>
+  <!-- 8. 設定（折疊） -->
+  <div>
+    <div class="settings-toggle" id="p0-settToggle" onclick="toggleSettings(0)">
+      <span>⚙️ 借貸設定</span><span class="arrow">▼</span>
+    </div>
+    <div class="settings-body" id="p0-settBody">
+      <div>
+        <div class="card-title">借貸資訊</div>
+        <div class="row">
+          <div class="field"><label>質押標的</label><input type="text" id="p0-pledge" placeholder="台積電 2330" oninput="saveAndCalc(0)"></div>
+          <div class="field"><label>借貸金額（元）</label><input type="number" id="p0-loan" placeholder="600000" oninput="saveAndCalc(0)"></div>
+          <div class="field"><label>年利率（%）</label><input type="number" id="p0-rate" placeholder="3.5" step="0.1" oninput="saveAndCalc(0)"></div>
+          <div class="field"><label>借貸起始日</label><input type="date" id="p0-startDate" oninput="onDateChange(0)"></div>
+          <div class="field"><label>到期日</label><input type="date" id="p0-expDate" oninput="saveAndCalc(0)"></div>
+          <div class="field"><label>借貸天數<span style="color:#bbb;font-size:10px">（自動）</span></label><input type="number" id="p0-days" placeholder="自動" oninput="saveAndCalc(0)"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card-title">質押品資訊</div>
+        <div class="row">
+          <div class="field"><label>質押品股數</label><input type="number" id="p0-colShares" placeholder="1000" step="1" oninput="saveAndCalc(0)"></div>
+          <div class="field"><label>質押品現價（元）</label><input type="number" id="p0-colPrice" placeholder="950" step="0.1" oninput="saveAndCalc(0)"></div>
+        </div>
+      </div>
+      <div class="thresh-row">
+        <span>🔔 資金使用率警示閾值</span>
+        <input type="number" class="thresh-input" id="p0-thresh" value="85" min="1" max="100" oninput="saveAndCalc(0)">
+        <span>%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 通知 -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 15px;">
     <div class="notif-row">
-      <span id="notif-status">開啟後，每次開 App 若有警示將自動跳出通知</span>
+      <span id="notif-status">開啟後，App 開啟時有警示將自動通知</span>
       <button class="btn-notif" id="notif-btn" onclick="requestNotif()">開啟通知</button>
     </div>
   </div>
-  <div class="note">損益未含手續費，年化報酬以持有天數估算，僅供參考</div>
+
+  <div class="note">損益未含手續費 ｜ 年化報酬以持有天數估算 ｜ 僅供參考</div>
 </div>
 
 <!-- ══ 玉山證券 ══ -->
 <div class="page" id="page-1">
+
   <div class="alert-banner" id="alert-1"></div>
 
-  <div class="card">
-    <div class="card-title">質押設定 — 玉山證券</div>
-    <div class="row">
-      <div class="field"><label>質押標的</label><input type="text" id="p1-pledge" placeholder="006208" oninput="saveAndCalc(1)"></div>
-      <div class="field"><label>借貸金額（元）</label><input type="number" id="p1-loan" placeholder="400000" oninput="saveAndCalc(1)"></div>
-      <div class="field"><label>年利率（%）</label><input type="number" id="p1-rate" placeholder="3.5" step="0.1" oninput="saveAndCalc(1)"></div>
-      <div class="field"><label>借貸起始日</label><input type="date" id="p1-startDate" oninput="onDateChange(1)"></div>
-      <div class="field"><label>借貸天數 <span style="color:#bbb;font-size:10px">（自動計算）</span></label><input type="number" id="p1-days" placeholder="自動" oninput="saveAndCalc(1)"></div>
-    </div>
-    <hr class="divider">
-    <div class="row">
-      <div class="field"><label>質押品股數</label><input type="number" id="p1-colShares" placeholder="例：1000" step="1" min="1" oninput="saveAndCalc(1)"></div>
-      <div class="field"><label>質押品現價（元）<span style="color:#bbb;font-size:10px"> 點擊更新</span></label><input type="number" id="p1-colPrice" placeholder="例：80" step="0.1" oninput="saveAndCalc(1)"></div>
-    </div>
-    <hr class="divider">
-    <div class="thresh-row">
-      <span>🔔 警示閾值：使用率超過</span>
-      <input type="number" class="thresh-input" id="p1-thresh" value="85" min="1" max="100" oninput="saveAndCalc(1)">
-      <span>%</span>
-    </div>
-  </div>
-
-  <!-- 維持率 -->
-  <div class="maint-box" id="p1-maintBox" style="display:none">
-    <div class="maint-inner">
-      <div>
-        <div class="maint-label">質押品維持率</div>
-        <div class="maint-value" id="p1-maintVal">—</div>
-        <div class="maint-sub" id="p1-maintSub"></div>
+  <div class="risk-panel" id="p1-riskPanel">
+    <div class="risk-header">
+      <div class="risk-header-top">
+        <span class="risk-title">風險儀表板 — 玉山證券</span>
+        <span class="risk-status" id="p1-riskStatus">—</span>
       </div>
-      <div class="maint-bar-wrap">
-        <div class="maint-track"><div class="maint-fill" id="p1-maintFill"></div></div>
-        <div class="maint-hint" id="p1-maintHint"></div>
+    </div>
+    <div class="risk-grid">
+      <div class="risk-cell">
+        <div class="risk-label">質押維持率</div>
+        <div class="risk-val" id="p1-maintVal">—</div>
+        <div class="risk-sub" id="p1-maintSub">填入質押品資訊</div>
       </div>
+      <div class="risk-cell">
+        <div class="risk-label">追繳警戒價</div>
+        <div class="risk-val" id="p1-triggerPrice">—</div>
+        <div class="risk-sub" id="p1-triggerSub">跌破即追繳</div>
+      </div>
+      <div class="risk-cell">
+        <div class="risk-label">借貸到期</div>
+        <div class="risk-val" id="p1-expDays">—</div>
+        <div class="risk-sub" id="p1-expDate">未設定到期日</div>
+      </div>
+    </div>
+    <div class="expiry-bar-wrap" id="p1-expBarWrap" style="display:none">
+      <div class="expiry-bar-label">
+        <span id="p1-expStart">借貸起始</span>
+        <span id="p1-expEnd">到期日</span>
+      </div>
+      <div class="expiry-track"><div class="expiry-fill" id="p1-expFill"></div></div>
     </div>
   </div>
 
@@ -344,7 +369,7 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
     <div class="stat"><div class="stat-label">已投入</div><div class="stat-value" id="p1-sInvested">—</div><div class="stat-sub" id="p1-sInvestedPct"></div></div>
     <div class="stat"><div class="stat-label">剩餘水位</div><div class="stat-value" id="p1-sRemain">—</div><div class="stat-sub" id="p1-sRemainPct"></div></div>
     <div class="stat"><div class="stat-label">持倉損益</div><div class="stat-value" id="p1-sPnl">—</div><div class="stat-sub" id="p1-sPnlPct"></div></div>
-    <div class="stat" id="p1-sIntCard" style="display:none"><div class="stat-label">累計利息 <span id="p1-sDays" style="color:#bbb;font-size:10px"></span></div><div class="stat-value c-orange" id="p1-sInt">—</div><div class="stat-sub" id="p1-sNet"></div></div>
+    <div class="stat" id="p1-sIntCard" style="display:none"><div class="stat-label">累計利息<span id="p1-sDays" style="color:#bbb;font-size:10px;margin-left:3px"></span></div><div class="stat-value c-orange" id="p1-sInt">—</div><div class="stat-sub" id="p1-sNet"></div></div>
   </div>
 
   <div class="util">
@@ -352,23 +377,15 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
     <div class="util-track"><div class="util-fill" id="p1-utilFill" style="width:0%"></div></div>
   </div>
 
-  <div class="return-box" id="p1-returnBox" style="display:none">
-    <div class="rb-title">報酬分析</div>
-    <div class="rb-grid">
-      <div class="rb-item gross">
-        <div class="rb-label">持倉毛利</div>
-        <div class="rb-value c-green" id="p1-rbGross">—</div>
-        <div class="rb-sub" id="p1-rbGrossPct"></div>
-      </div>
-      <div class="rb-item" id="p1-rbNetItem">
-        <div class="rb-label">扣除利息後淨利</div>
-        <div class="rb-value" id="p1-rbNet">—</div>
-        <div class="rb-sub" id="p1-rbNetPct"></div>
-      </div>
-      <div class="rb-item" style="background:#f0f6ff;border:1px solid #bfdbfe">
-        <div class="rb-label">年化報酬率（持倉）</div>
-        <div class="rb-value c-blue" id="p1-rbAnnual">—</div>
-        <div class="rb-sub" id="p1-rbAnnualNote"></div>
+  <div>
+    <div class="section-toggle" id="p1-retToggle" onclick="toggleSection('p1-ret')" style="border-radius:10px 10px 0 0;border-bottom:none;display:none">
+      <span>📈 報酬分析</span><span class="arrow">▼</span>
+    </div>
+    <div class="section-body" id="p1-retBody">
+      <div class="rb-grid">
+        <div class="rb-item gross"><div class="rb-label">持倉毛利</div><div class="rb-value c-green" id="p1-rbGross">—</div><div class="rb-sub" id="p1-rbGrossPct"></div></div>
+        <div class="rb-item" id="p1-rbNetItem" style="display:none"><div class="rb-label">扣除利息淨利</div><div class="rb-value" id="p1-rbNet">—</div><div class="rb-sub" id="p1-rbNetPct"></div></div>
+        <div class="rb-item neutral"><div class="rb-label">年化報酬率</div><div class="rb-value c-blue" id="p1-rbAnnual">—</div><div class="rb-sub" id="p1-rbAnnualNote"></div></div>
       </div>
     </div>
   </div>
@@ -387,226 +404,215 @@ tfoot td { padding:8px 11px; font-family:monospace; font-size:12px; font-weight:
     <div class="tscroll">
       <table>
         <thead><tr>
-          <th style="text-align:left">ETF</th>
-          <th>成本</th>
+          <th style="text-align:left">ETF</th><th>成本</th>
           <th>現價<span class="col-hint">（點擊更新）</span></th>
           <th>股數<span class="col-hint">（點擊修改）</span></th>
-          <th>投入金額</th><th>現值</th>
-          <th>損益</th><th>年化%</th><th>佔借貸</th><th></th>
+          <th>投入</th><th>現值</th><th>損益</th><th>年化%</th><th>佔借貸</th><th></th>
         </tr></thead>
         <tbody id="p1-tbody"></tbody>
         <tfoot id="p1-tfoot"></tfoot>
       </table>
     </div>
   </div>
-  <div class="note">損益未含手續費，年化報酬以持有天數估算，僅供參考</div>
+
+  <div>
+    <div class="settings-toggle" id="p1-settToggle" onclick="toggleSettings(1)">
+      <span>⚙️ 借貸設定</span><span class="arrow">▼</span>
+    </div>
+    <div class="settings-body" id="p1-settBody">
+      <div>
+        <div class="card-title">借貸資訊</div>
+        <div class="row">
+          <div class="field"><label>質押標的</label><input type="text" id="p1-pledge" placeholder="006208" oninput="saveAndCalc(1)"></div>
+          <div class="field"><label>借貸金額（元）</label><input type="number" id="p1-loan" placeholder="400000" oninput="saveAndCalc(1)"></div>
+          <div class="field"><label>年利率（%）</label><input type="number" id="p1-rate" placeholder="3.5" step="0.1" oninput="saveAndCalc(1)"></div>
+          <div class="field"><label>借貸起始日</label><input type="date" id="p1-startDate" oninput="onDateChange(1)"></div>
+          <div class="field"><label>到期日</label><input type="date" id="p1-expDate" oninput="saveAndCalc(1)"></div>
+          <div class="field"><label>借貸天數<span style="color:#bbb;font-size:10px">（自動）</span></label><input type="number" id="p1-days" placeholder="自動" oninput="saveAndCalc(1)"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card-title">質押品資訊</div>
+        <div class="row">
+          <div class="field"><label>質押品股數</label><input type="number" id="p1-colShares" placeholder="1000" step="1" oninput="saveAndCalc(1)"></div>
+          <div class="field"><label>質押品現價（元）</label><input type="number" id="p1-colPrice" placeholder="80" step="0.1" oninput="saveAndCalc(1)"></div>
+        </div>
+      </div>
+      <div class="thresh-row">
+        <span>🔔 資金使用率警示閾值</span>
+        <input type="number" class="thresh-input" id="p1-thresh" value="85" min="1" max="100" oninput="saveAndCalc(1)">
+        <span>%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">損益未含手續費 ｜ 年化報酬以持有天數估算 ｜ 僅供參考</div>
 </div>
 
 <script>
-const $ = id => document.getElementById(id);
-const BROKERS = ['新光證券','玉山證券'];
-const KEY = 'pledge_v2';
+const $=id=>document.getElementById(id);
+const BROKERS=['新光證券','玉山證券'];
+const KEY='pledge_v3';
 
-let state = [
-  { pledge:'', loan:'', rate:'', days:'', startDate:'', thresh:85, colShares:'', colPrice:'', holdings:[] },
-  { pledge:'', loan:'', rate:'', days:'', startDate:'', thresh:85, colShares:'', colPrice:'', holdings:[] }
+let state=[
+  {pledge:'',loan:'',rate:'',days:'',startDate:'',expDate:'',thresh:85,colShares:'',colPrice:'',holdings:[]},
+  {pledge:'',loan:'',rate:'',days:'',startDate:'',expDate:'',thresh:85,colShares:'',colPrice:'',holdings:[]}
 ];
 
 /* ── Tab ── */
-function switchTab(i) {
+function switchTab(i){
   document.querySelectorAll('.tab').forEach((t,n)=>t.classList.toggle('active',n===i));
   document.querySelectorAll('.page').forEach((p,n)=>p.classList.toggle('active',n===i));
 }
 
+/* ── Toggle sections ── */
+function toggleSection(id){
+  const t=$(`${id}Toggle`), b=$(`${id}Body`);
+  t.classList.toggle('open'); b.classList.toggle('open');
+}
+function toggleSettings(i){
+  const t=$(`p${i}-settToggle`), b=$(`p${i}-settBody`);
+  t.classList.toggle('open'); b.classList.toggle('open');
+}
+
 /* ── Storage ── */
-function saveData() {
-  [0,1].forEach(i => {
-    state[i].pledge    = $(`p${i}-pledge`).value;
-    state[i].loan      = $(`p${i}-loan`).value;
-    state[i].rate      = $(`p${i}-rate`).value;
-    state[i].days      = $(`p${i}-days`).value;
-    state[i].startDate = $(`p${i}-startDate`).value;
-    state[i].colShares = $(`p${i}-colShares`).value;
-    state[i].colPrice  = $(`p${i}-colPrice`).value;
-    state[i].thresh    = parseFloat($(`p${i}-thresh`).value)||85;
+function saveData(){
+  [0,1].forEach(i=>{
+    state[i].pledge    =$(`p${i}-pledge`).value;
+    state[i].loan      =$(`p${i}-loan`).value;
+    state[i].rate      =$(`p${i}-rate`).value;
+    state[i].days      =$(`p${i}-days`).value;
+    state[i].startDate =$(`p${i}-startDate`).value;
+    state[i].expDate   =$(`p${i}-expDate`).value;
+    state[i].colShares =$(`p${i}-colShares`).value;
+    state[i].colPrice  =$(`p${i}-colPrice`).value;
+    state[i].thresh    =parseFloat($(`p${i}-thresh`).value)||85;
   });
-  localStorage.setItem(KEY, JSON.stringify(state));
-  const el=$('saveStatus'); el.textContent='已儲存 ✓';
+  localStorage.setItem(KEY,JSON.stringify(state));
+  const el=$('saveStatus');el.textContent='已儲存 ✓';
   setTimeout(()=>el.textContent='已儲存',1500);
 }
 
-function loadData() {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return;
-    const d = JSON.parse(raw);
-    if (!Array.isArray(d)) return;
-    d.forEach((s,i) => {
-      if (!state[i]) return;
-      state[i] = {...state[i], ...s};
-      if (s.pledge)    $(`p${i}-pledge`).value    = s.pledge;
-      if (s.loan)      $(`p${i}-loan`).value      = s.loan;
-      if (s.rate)      $(`p${i}-rate`).value      = s.rate;
-      if (s.startDate) $(`p${i}-startDate`).value = s.startDate;
-      if (s.colShares) $(`p${i}-colShares`).value = s.colShares;
-      if (s.colPrice)  $(`p${i}-colPrice`).value  = s.colPrice;
-      if (s.thresh)    $(`p${i}-thresh`).value    = s.thresh;
-      if (Array.isArray(s.holdings)) state[i].holdings = s.holdings;
-      // 起始日載入後自動算天數
-      if (s.startDate) {
-        const d = calcDaysFromDate(s.startDate);
-        if (d > 0) $(`p${i}-days`).value = d;
-      } else if (s.days) {
-        $(`p${i}-days`).value = s.days;
-      }
+function loadData(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw)return;
+    const d=JSON.parse(raw);
+    if(!Array.isArray(d))return;
+    d.forEach((s,i)=>{
+      if(!state[i])return;
+      state[i]={...state[i],...s};
+      if(s.pledge)    $(`p${i}-pledge`).value    =s.pledge;
+      if(s.loan)      $(`p${i}-loan`).value      =s.loan;
+      if(s.rate)      $(`p${i}-rate`).value      =s.rate;
+      if(s.startDate) $(`p${i}-startDate`).value =s.startDate;
+      if(s.expDate)   $(`p${i}-expDate`).value   =s.expDate;
+      if(s.colShares) $(`p${i}-colShares`).value =s.colShares;
+      if(s.colPrice)  $(`p${i}-colPrice`).value  =s.colPrice;
+      if(s.thresh)    $(`p${i}-thresh`).value    =s.thresh;
+      if(Array.isArray(s.holdings))state[i].holdings=s.holdings;
+      if(s.startDate){const d=calcDaysFromDate(s.startDate);if(d>0)$(`p${i}-days`).value=d;}
+      else if(s.days){$(`p${i}-days`).value=s.days;}
     });
-  } catch(e){}
+  }catch(e){}
 }
 
-/* ── 日期→天數 ── */
-function calcDaysFromDate(dateStr) {
-  if (!dateStr) return 0;
-  const start = new Date(dateStr);
-  const today = new Date();
+/* ── Date helpers ── */
+function calcDaysFromDate(dateStr){
+  if(!dateStr)return 0;
+  const start=new Date(dateStr),today=new Date();
   today.setHours(0,0,0,0);
-  const diff = Math.floor((today - start) / 86400000);
-  return diff >= 0 ? diff : 0;
+  const diff=Math.floor((today-start)/86400000);
+  return diff>=0?diff:0;
 }
-
-function onDateChange(i) {
-  const dateVal = $(`p${i}-startDate`).value;
-  if (dateVal) {
-    const d = calcDaysFromDate(dateVal);
-    $(`p${i}-days`).value = d > 0 ? d : 1;
-  }
+function onDateChange(i){
+  const v=$(`p${i}-startDate`).value;
+  if(v){const d=calcDaysFromDate(v);$(`p${i}-days`).value=d>0?d:1;}
   saveAndCalc(i);
 }
 
 /* ── Format ── */
-const fmtN = n => isNaN(n)?'—':Math.round(n).toLocaleString('zh-TW');
-const fmtW = n => {
-  if(isNaN(n)||n==null) return '—';
-  if(Math.abs(n)>=10000) return (n/10000).toFixed(1)+'萬';
-  return Math.round(n).toLocaleString();
-};
-const getLoan = i => parseFloat($(`p${i}-loan`).value)||0;
+const fmtN=n=>isNaN(n)?'—':Math.round(n).toLocaleString('zh-TW');
+const fmtW=n=>{if(isNaN(n)||n==null)return'—';if(Math.abs(n)>=10000)return(n/10000).toFixed(1)+'萬';return Math.round(n).toLocaleString();};
+const getLoan=i=>parseFloat($(`p${i}-loan`).value)||0;
 
-/* ── Add ── */
-function addStock(i) {
-  const name   = $(`p${i}-iName`).value.trim();
-  const cost   = parseFloat($(`p${i}-iCost`).value);
-  const price  = parseFloat($(`p${i}-iPrice`).value);
-  const shares = parseInt($(`p${i}-iShares`).value);
-  const buyDateInput = $(`p${i}-iBuyDate`).value;
+/* ── Add stock ── */
+function addStock(i){
+  const name=$(`p${i}-iName`).value.trim();
+  const cost=parseFloat($(`p${i}-iCost`).value);
+  const price=parseFloat($(`p${i}-iPrice`).value);
+  const shares=parseInt($(`p${i}-iShares`).value);
+  const buyDate=$(`p${i}-iBuyDate`).value||new Date().toISOString().slice(0,10);
   if(!name||isNaN(cost)||cost<=0||isNaN(shares)||shares<=0){alert('請填入名稱、成本與股數');return;}
-  const buyDate = buyDateInput || new Date().toISOString().slice(0,10);
-  state[i].holdings.push({
-    id: Date.now(), name, cost,
-    price: isNaN(price)?cost:price,
-    shares, buyDate
-  });
-  $(`p${i}-iName`).value=''; $(`p${i}-iCost`).value='';
-  $(`p${i}-iPrice`).value=''; $(`p${i}-iShares`).value='';
-  $(`p${i}-iBuyDate`).value='';
+  state[i].holdings.push({id:Date.now(),name,cost,price:isNaN(price)?cost:price,shares,buyDate});
+  $(`p${i}-iName`).value='';$(`p${i}-iCost`).value='';$(`p${i}-iPrice`).value='';
+  $(`p${i}-iShares`).value='';$(`p${i}-iBuyDate`).value='';
   $(`p${i}-iName`).focus();
-  saveData(); render(i); calc(i);
+  saveData();render(i);calc(i);
 }
 
 /* ── Remove ── */
-function removeStock(i,id) {
-  state[i].holdings = state[i].holdings.filter(h=>h.id!==id);
-  saveData(); render(i); calc(i);
+function removeStock(i,id){
+  state[i].holdings=state[i].holdings.filter(h=>h.id!==id);
+  saveData();render(i);calc(i);
 }
 
 /* ── Commit edits ── */
-function commitPrice(i,id,inp,val) {
+function commitPrice(i,id,inp,val){
   const v=parseFloat(inp.value);
-  if(!isNaN(v)&&v>0){
-    const h=state[i].holdings.find(h=>h.id===id);
-    if(h) h.price=v;
-    val.textContent=v.toFixed(2);
-    saveData(); updateRow(i,id); calc(i);
-  }
-  inp.classList.remove('editing'); val.classList.remove('editing');
+  if(!isNaN(v)&&v>0){const h=state[i].holdings.find(h=>h.id===id);if(h)h.price=v;val.textContent=v.toFixed(2);saveData();updateRow(i,id);calc(i);}
+  inp.classList.remove('editing');val.classList.remove('editing');
 }
-function commitShares(i,id,inp,val) {
+function commitShares(i,id,inp,val){
   const v=parseInt(inp.value);
-  if(!isNaN(v)&&v>0){
-    const h=state[i].holdings.find(h=>h.id===id);
-    if(h) h.shares=v;
-    val.textContent=v.toLocaleString();
-    saveData(); updateRow(i,id); calc(i);
-  }
-  inp.classList.remove('editing'); val.classList.remove('editing');
+  if(!isNaN(v)&&v>0){const h=state[i].holdings.find(h=>h.id===id);if(h)h.shares=v;val.textContent=v.toLocaleString();saveData();updateRow(i,id);calc(i);}
+  inp.classList.remove('editing');val.classList.remove('editing');
 }
 
-/* ── Holding days & annualized return ── */
-function holdDays(buyDate) {
-  if(!buyDate) return null;
-  const diff = Date.now() - new Date(buyDate).getTime();
-  return Math.max(1, Math.round(diff/86400000));
-}
-function annualized(pnlPct, days) {
-  if(!days||days<1) return null;
-  return ((1 + pnlPct/100) ** (365/days) - 1) * 100;
-}
+/* ── Hold days & annualized ── */
+function holdDays(buyDate){if(!buyDate)return null;return Math.max(1,Math.round((Date.now()-new Date(buyDate).getTime())/86400000));}
+function annualized(pct,days){if(!days||days<1)return null;return((1+pct/100)**(365/days)-1)*100;}
 
-/* ── Update single row (no full re-render) ── */
-function updateRow(i,id) {
-  const loan=getLoan(i);
-  const h=state[i].holdings.find(h=>h.id===id);
-  if(!h) return;
-  const row=document.querySelector(`#p${i}-tbody tr[data-id="${id}"]`);
-  if(!row) return;
-  const costMV=h.cost*h.shares, mv=h.price*h.shares;
-  const pnl=mv-costMV, pnlPct=costMV>0?pnl/costMV*100:0;
-  const lp=loan>0?costMV/loan*100:0;
-  const sign=pnl>=0?'+':'', cls=pnl>0?'pos':pnl<0?'neg':'muted';
-  const days=holdDays(h.buyDate);
-  const ann=days?annualized(pnlPct,days):null;
+/* ── Update single row ── */
+function updateRow(i,id){
+  const loan=getLoan(i),h=state[i].holdings.find(h=>h.id===id);
+  if(!h)return;
+  const row=document.querySelector(`#p${i}-tbody tr[data-id="${id}"]`);if(!row)return;
+  const costMV=h.cost*h.shares,mv=h.price*h.shares,pnl=mv-costMV,pnlPct=costMV>0?pnl/costMV*100:0;
+  const lp=loan>0?costMV/loan*100:0,sign=pnl>=0?'+':'',cls=pnl>0?'pos':pnl<0?'neg':'muted';
+  const days=holdDays(h.buyDate),ann=days?annualized(pnlPct,days):null;
   row.querySelector('.td-costmv').textContent=fmtN(costMV);
   row.querySelector('.td-mv').textContent=fmtN(mv);
-  const pc=row.querySelector('.td-pnl');
-  pc.className=`td-pnl mono ${cls}`;
+  const pc=row.querySelector('.td-pnl');pc.className=`td-pnl mono ${cls}`;
   pc.innerHTML=`${sign}${fmtN(pnl)}<br><span style="font-size:10px">${sign}${pnlPct.toFixed(2)}%</span>`;
-  const ac=row.querySelector('.td-ann');
-  ac.className=`td-ann mono ${ann===null?'muted':ann>=0?'pos':'neg'}`;
+  const ac=row.querySelector('.td-ann');ac.className=`td-ann mono ${ann===null?'muted':ann>=0?'pos':'neg'}`;
   ac.textContent=ann===null?'—':(ann>=0?'+':'')+ann.toFixed(1)+'%';
   row.querySelector('.td-lp').textContent=lp.toFixed(1)+'%';
   renderFoot(i);
 }
 
 /* ── Render table ── */
-function render(i) {
-  const loan=getLoan(i);
-  const hs=state[i].holdings;
+function render(i){
+  const loan=getLoan(i),hs=state[i].holdings;
   $(`p${i}-holdCount`).textContent=hs.length+' 筆';
-  if(!hs.length){
-    $(`p${i}-tbody`).innerHTML='<tr><td colspan="10"><div class="empty">尚未新增持倉</div></td></tr>';
-    $(`p${i}-tfoot`).innerHTML=''; return;
-  }
+  if(!hs.length){$(`p${i}-tbody`).innerHTML='<tr><td colspan="10"><div class="empty">尚未新增持倉</div></td></tr>';$(`p${i}-tfoot`).innerHTML='';return;}
   $(`p${i}-tbody`).innerHTML=hs.map(h=>{
-    const costMV=h.cost*h.shares, mv=h.price*h.shares;
-    const pnl=mv-costMV, pnlPct=costMV>0?pnl/costMV*100:0;
-    const lp=loan>0?costMV/loan*100:0;
-    const sign=pnl>=0?'+':'', cls=pnl>0?'pos':pnl<0?'neg':'muted';
-    const days=holdDays(h.buyDate);
-    const ann=days?annualized(pnlPct,days):null;
-    const annStr=ann===null?'—':(ann>=0?'+':'')+ann.toFixed(1)+'%';
-    const annCls=ann===null?'muted':ann>=0?'pos':'neg';
-    const esc=s=>String(s).replace(/'/g,"\\'");
+    const costMV=h.cost*h.shares,mv=h.price*h.shares,pnl=mv-costMV,pnlPct=costMV>0?pnl/costMV*100:0;
+    const lp=loan>0?costMV/loan*100:0,sign=pnl>=0?'+':'',cls=pnl>0?'pos':pnl<0?'neg':'muted';
+    const days=holdDays(h.buyDate),ann=days?annualized(pnlPct,days):null;
+    const annStr=ann===null?'—':(ann>=0?'+':'')+ann.toFixed(1)+'%',annCls=ann===null?'muted':ann>=0?'pos':'neg';
     return `<tr data-id="${h.id}">
       <td>${h.name}${h.buyDate?`<br><span style="font-size:10px;color:#bbb">${h.buyDate}${days?` · ${days}天`:''}</span>`:''}
       </td>
       <td style="font-family:monospace">${h.cost.toFixed(2)}</td>
       <td><div class="price-cell">
-        <span class="editable" onclick="startEdit(this,${i},${h.id},'price')" title="點擊更新">${h.price.toFixed(2)}</span>
+        <span class="editable" onclick="startEdit(this,${i},${h.id},'price')">${h.price.toFixed(2)}</span>
         <input class="edit-input" type="number" step="0.01"
           onblur="commitPrice(${i},${h.id},this,this.previousElementSibling)"
           onkeydown="handleKey(event,${i},${h.id},'price',this)">
       </div></td>
       <td>
-        <span class="editable" onclick="startEdit(this,${i},${h.id},'shares')" title="點擊修改">${h.shares.toLocaleString()}</span>
+        <span class="editable" onclick="startEdit(this,${i},${h.id},'shares')">${h.shares.toLocaleString()}</span>
         <input class="edit-input" type="number" step="1" min="1"
           onblur="commitShares(${i},${h.id},this,this.previousElementSibling)"
           onkeydown="handleKey(event,${i},${h.id},'shares',this)">
@@ -622,45 +628,38 @@ function render(i) {
   renderFoot(i);
 }
 
-function renderFoot(i) {
-  const loan=getLoan(i), hs=state[i].holdings;
-  const tCost=hs.reduce((s,h)=>s+h.cost*h.shares,0);
-  const tMV=hs.reduce((s,h)=>s+h.price*h.shares,0);
-  const tPnl=tMV-tCost, tPct=tCost>0?tPnl/tCost*100:0;
-  const tLp=loan>0?tCost/loan*100:0;
-  const sign=tPnl>=0?'+':'', cls=tPnl>0?'pos':tPnl<0?'neg':'muted';
+function renderFoot(i){
+  const loan=getLoan(i),hs=state[i].holdings;
+  const tCost=hs.reduce((s,h)=>s+h.cost*h.shares,0),tMV=hs.reduce((s,h)=>s+h.price*h.shares,0);
+  const tPnl=tMV-tCost,tPct=tCost>0?tPnl/tCost*100:0,tLp=loan>0?tCost/loan*100:0;
+  const sign=tPnl>=0?'+':'',cls=tPnl>0?'pos':tPnl<0?'neg':'muted';
   $(`p${i}-tfoot`).innerHTML=`<tr>
     <td colspan="4" style="color:#bbb;font-size:10px;font-weight:400;letter-spacing:1px;text-transform:uppercase">合計</td>
-    <td style="font-family:monospace">${fmtN(tCost)}</td>
-    <td style="font-family:monospace">${fmtN(tMV)}</td>
+    <td style="font-family:monospace">${fmtN(tCost)}</td><td style="font-family:monospace">${fmtN(tMV)}</td>
     <td class="${cls}" style="font-family:monospace">${sign}${fmtN(tPnl)}<br><span style="font-size:10px">${sign}${tPct.toFixed(2)}%</span></td>
-    <td class="muted" style="font-family:monospace">—</td>
-    <td><span class="badge">${tLp.toFixed(1)}%</span></td>
-    <td></td>
+    <td class="muted">—</td>
+    <td><span class="badge">${tLp.toFixed(1)}%</span></td><td></td>
   </tr>`;
 }
 
 /* ── Edit helpers ── */
-function startEdit(valEl, i, id, field) {
+function startEdit(valEl,i,id,field){
   const inp=valEl.nextElementSibling;
-  valEl.classList.add('editing'); inp.classList.add('editing');
+  valEl.classList.add('editing');inp.classList.add('editing');
   const h=state[i].holdings.find(h=>h.id===id);
-  inp.value = field==='price' ? h?.price.toFixed(2) : h?.shares;
-  inp.focus(); inp.select();
+  inp.value=field==='price'?h?.price.toFixed(2):h?.shares;
+  inp.focus();inp.select();
 }
-function handleKey(e, i, id, field, inp) {
-  if(e.key==='Enter') inp.blur();
+function handleKey(e,i,id,field,inp){
+  if(e.key==='Enter')inp.blur();
   if(e.key==='Escape'){inp.classList.remove('editing');inp.previousElementSibling.classList.remove('editing');}
 }
 
-/* ── Calc & alerts ── */
-function calc(i) {
-  // 如果有起始日，每次 calc 時自動更新天數（日期過了天數增加）
-  const dateVal = $(`p${i}-startDate`).value;
-  if (dateVal) {
-    const d = calcDaysFromDate(dateVal);
-    if (d > 0) $(`p${i}-days`).value = d;
-  }
+/* ── Main calc ── */
+function calc(i){
+  // 自動更新天數
+  const dateVal=$(`p${i}-startDate`).value;
+  if(dateVal){const d=calcDaysFromDate(dateVal);if(d>0)$(`p${i}-days`).value=d;}
 
   const loan=getLoan(i);
   const rate=parseFloat($(`p${i}-rate`).value)||0;
@@ -668,50 +667,93 @@ function calc(i) {
   const thresh=parseFloat($(`p${i}-thresh`).value)||85;
   const colShares=parseFloat($(`p${i}-colShares`).value)||0;
   const colPrice=parseFloat($(`p${i}-colPrice`).value)||0;
+  const expDateVal=$(`p${i}-expDate`).value;
   const hs=state[i].holdings;
   const invested=hs.reduce((s,h)=>s+h.cost*h.shares,0);
   const curMV=hs.reduce((s,h)=>s+h.price*h.shares,0);
-  const pnl=curMV-invested, pnlPct=invested>0?pnl/invested*100:0;
+  const pnl=curMV-invested,pnlPct=invested>0?pnl/invested*100:0;
   const remain=loan-invested;
   const usePct=loan>0?Math.min(invested/loan*100,999):0;
   const interest=loan>0&&rate>0&&days>0?loan*(rate/100)*(days/365):null;
 
-  // 維持率
-  const maintBox=$(`p${i}-maintBox`);
-  if(colShares>0 && colPrice>0 && loan>0) {
-    const colMV = colShares * colPrice;
-    const maint = colMV / loan * 100;
-    maintBox.style.display='';
-    const mv=$(`p${i}-maintVal`), ms=$(`p${i}-maintSub`), mf=$(`p${i}-maintFill`), mh=$(`p${i}-maintHint`);
-    mv.textContent = maint.toFixed(1)+'%';
-    ms.textContent = `質押品市值 ${fmtW(colMV)} 元`;
-    // 顏色
-    if(maint < 130){
-      mv.className='maint-value c-red';
-      maintBox.className='maint-box danger';
-      mh.textContent='⚠️ 低於 130%，有追繳風險！';
-      mh.style.color='#dc2626';
-    } else if(maint < 150){
-      mv.className='maint-value c-orange';
-      maintBox.className='maint-box warn';
-      mh.textContent='注意：接近警戒線，建議留意';
-      mh.style.color='#d97706';
-    } else {
-      mv.className='maint-value c-green';
-      maintBox.className='maint-box safe';
-      mh.textContent='✓ 維持率正常';
-      mh.style.color='#16a34a';
+  /* ── 維持率 & 追繳警戒價 ── */
+  const panel=$(`p${i}-riskPanel`);
+  const statusEl=$(`p${i}-riskStatus`);
+  let riskLevel='safe';
+
+  if(colShares>0&&colPrice>0&&loan>0){
+    const colMV=colShares*colPrice;
+    const maint=colMV/loan*100;
+    // 追繳警戒價：loan*1.3/colShares
+    const triggerPx=loan*1.3/colShares;
+    // 距警戒還有多少空間
+    const bufferPct=((colPrice-triggerPx)/colPrice*100);
+
+    $(`p${i}-maintVal`).textContent=maint.toFixed(1)+'%';
+    $(`p${i}-maintSub`).textContent='市值 '+fmtW(colMV)+' 元';
+    $(`p${i}-triggerPrice`).textContent='$'+triggerPx.toFixed(1);
+    $(`p${i}-triggerSub`).textContent='尚有 '+bufferPct.toFixed(1)+'% 緩衝';
+
+    if(maint<130){
+      riskLevel='danger';
+      $(`p${i}-maintVal`).className='risk-val c-red';
+      $(`p${i}-triggerPrice`).className='risk-val c-red';
+      statusEl.textContent='⚠️ 追繳風險';
+      statusEl.className='risk-status danger';
+    }else if(maint<150){
+      riskLevel='warn';
+      $(`p${i}-maintVal`).className='risk-val c-orange';
+      $(`p${i}-triggerPrice`).className='risk-val c-orange';
+      statusEl.textContent='⚡ 注意';
+      statusEl.className='risk-status warn';
+    }else{
+      $(`p${i}-maintVal`).className='risk-val c-green';
+      $(`p${i}-triggerPrice`).className='risk-val c-green';
+      statusEl.textContent='✓ 正常';
+      statusEl.className='risk-status safe';
     }
-    // bar（以300%為滿）
-    mf.style.width=Math.min(maint/300*100,100)+'%';
-    mf.style.background=maint<130?'#ef4444':maint<150?'#f59e0b':'#16a34a';
-    // 警示通知
-    if(maint < 130) pushNotif(BROKERS[i]+' 維持率', maint, 130, colMV-loan*1.3);
-  } else {
-    maintBox.style.display='none';
+    if(maint<130) pushNotif(BROKERS[i]+'維持率',maint,130,0);
+  }else{
+    $(`p${i}-maintVal`).textContent='—';
+    $(`p${i}-maintSub`).textContent='填入質押品資訊';
+    $(`p${i}-triggerPrice`).textContent='—';
+    $(`p${i}-triggerSub`).textContent='跌破即追繳';
+    statusEl.textContent='—';
+    statusEl.className='risk-status';
   }
 
-  // 摘要
+  /* ── 到期日 ── */
+  const expEl=$(`p${i}-expDays`), expSubEl=$(`p${i}-expDate`);
+  const expBarWrap=$(`p${i}-expBarWrap`);
+  if(expDateVal){
+    const today=new Date();today.setHours(0,0,0,0);
+    const exp=new Date(expDateVal);
+    const daysLeft=Math.ceil((exp-today)/86400000);
+    expEl.textContent=daysLeft>0?daysLeft+'天':'已到期';
+    expEl.className='risk-val '+(daysLeft<=7?'c-red':daysLeft<=30?'c-orange':'c-blue');
+    expSubEl.textContent=expDateVal+' 到期';
+    // 進度條
+    if(dateVal){
+      expBarWrap.style.display='';
+      const start=new Date(dateVal);
+      const total=Math.max(1,(exp-start)/86400000);
+      const elapsed=Math.max(0,(today-start)/86400000);
+      const pct=Math.min(elapsed/total*100,100);
+      $(`p${i}-expFill`).style.width=pct+'%';
+      $(`p${i}-expFill`).style.background=daysLeft<=7?'#ef4444':daysLeft<=30?'#f59e0b':'#3b82f6';
+      $(`p${i}-expStart`).textContent=dateVal;
+      $(`p${i}-expEnd`).textContent=expDateVal;
+    }else{expBarWrap.style.display='none';}
+    if(daysLeft<=7&&daysLeft>0) pushNotif(BROKERS[i]+'到期',daysLeft,7,0);
+    if(riskLevel==='safe'&&daysLeft<=7) riskLevel='warn';
+  }else{
+    expEl.textContent='—';expSubEl.textContent='未設定到期日';
+    expBarWrap.style.display='none';
+  }
+
+  panel.className='risk-panel '+riskLevel;
+
+  /* ── 摘要 ── */
   $(`p${i}-sLoan`).textContent=loan>0?fmtW(loan):'—';
   $(`p${i}-sInvested`).textContent=invested>0?fmtW(invested):'—';
   $(`p${i}-sInvested`).className='stat-value'+(invested>0?' c-blue':'');
@@ -724,120 +766,90 @@ function calc(i) {
   $(`p${i}-sPnlPct`).textContent=invested>0?(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%':'';
   if(interest!==null){
     $(`p${i}-sIntCard`).style.display='';
-    $(`p${i}-sDays`).textContent = days > 0 ? `${days}天` : '';
+    $(`p${i}-sDays`).textContent=days>0?`${days}天`:'';
     $(`p${i}-sInt`).textContent=fmtW(interest);
     const net=pnl-interest;
-    $(`p${i}-sNet`).textContent='淨損益 '+(net>=0?'+':'')+fmtW(net);
+    $(`p${i}-sNet`).textContent='淨 '+(net>=0?'+':'')+fmtW(net);
     $(`p${i}-sNet`).style.color=net>=0?'#16a34a':'#dc2626';
-  } else { $(`p${i}-sIntCard`).style.display='none'; }
+  }else{$(`p${i}-sIntCard`).style.display='none';}
 
-  // 使用率 bar
+  /* ── 使用率 bar ── */
   const fill=$(`p${i}-utilFill`);
   $(`p${i}-utilPct`).textContent=usePct.toFixed(1)+'%';
   $(`p${i}-utilPct`).style.color=usePct>=100?'#dc2626':usePct>=thresh?'#d97706':'#111';
   fill.style.width=Math.min(usePct,100)+'%';
   fill.style.background=usePct>=100?'#ef4444':usePct>=thresh?'#f59e0b':'#3b82f6';
 
-  // 報酬分析區塊
-  const rb=$(`p${i}-returnBox`);
-  if(invested>0) {
-    rb.style.display='';
-    // 毛利
+  /* ── 報酬分析 ── */
+  const retToggle=$(`p${i}-retToggle`);
+  if(invested>0){
+    retToggle.style.display='';
     $(`p${i}-rbGross`).textContent=(pnl>=0?'+':'')+fmtW(pnl);
     $(`p${i}-rbGross`).className='rb-value '+(pnl>=0?'c-green':'c-red');
     $(`p${i}-rbGrossPct`).textContent=(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%';
-    // 淨利（扣利息）
     const netItem=$(`p${i}-rbNetItem`);
-    if(interest!==null) {
+    if(interest!==null){
       netItem.style.display='';
-      const netPnl=pnl-interest;
-      const netPct=invested>0?netPnl/invested*100:0;
+      const netPnl=pnl-interest,netPct=invested>0?netPnl/invested*100:0;
       $(`p${i}-rbNet`).textContent=(netPnl>=0?'+':'')+fmtW(netPnl);
       $(`p${i}-rbNet`).className='rb-value '+(netPnl>=0?'c-green':'c-red');
       $(`p${i}-rbNetPct`).textContent=(netPct>=0?'+':'')+netPct.toFixed(2)+'%';
       netItem.className='rb-item '+(netPnl>=0?'net':'loss');
-    } else { netItem.style.display='none'; }
-    // 年化報酬（用加權持有天數估算）
+    }else{netItem.style.display='none';}
     const totalCost=hs.reduce((s,h)=>s+h.cost*h.shares,0);
-    let wavgDays=0;
-    hs.forEach(h=>{
-      const d=holdDays(h.buyDate)||1;
-      const w=totalCost>0?(h.cost*h.shares)/totalCost:1/hs.length;
-      wavgDays+=d*w;
-    });
-    const ann=wavgDays>=1?annualized(pnlPct,wavgDays):null;
+    let wavg=0;
+    hs.forEach(h=>{const d=holdDays(h.buyDate)||1;const w=totalCost>0?(h.cost*h.shares)/totalCost:1/hs.length;wavg+=d*w;});
+    const ann=wavg>=1?annualized(pnlPct,wavg):null;
     if(ann!==null){
       $(`p${i}-rbAnnual`).textContent=(ann>=0?'+':'')+ann.toFixed(2)+'%';
       $(`p${i}-rbAnnual`).className='rb-value '+(ann>=0?'c-blue':'c-red');
-      $(`p${i}-rbAnnualNote`).textContent=`加權平均持有 ${Math.round(wavgDays)} 天`;
-    } else {
-      $(`p${i}-rbAnnual`).textContent='—';
-      $(`p${i}-rbAnnualNote`).textContent='需輸入持股後計算';
-    }
-  } else { rb.style.display='none'; }
+      $(`p${i}-rbAnnualNote`).textContent=`加權持有 ${Math.round(wavg)} 天`;
+    }else{$(`p${i}-rbAnnual`).textContent='—';$(`p${i}-rbAnnualNote`).textContent='';}
+  }else{retToggle.style.display='none';}
 
-  // 警示
-  const banner=$(`alert-${i}`), dot=$(`dot-${i}`);
+  /* ── 使用率警示橫幅 ── */
+  const banner=$(`alert-${i}`),dot=$(`dot-${i}`);
   if(loan>0&&usePct>=thresh){
     const isDanger=usePct>=100;
     banner.className='alert-banner show '+(isDanger?'danger':'warn');
     banner.innerHTML=`<div class="alert-icon">${isDanger?'🚨':'⚠️'}</div>
       <div class="alert-text">
-        <div class="alert-title">${isDanger?'資金已全數投入！':'資金使用率警示'}</div>
-        <div class="alert-desc">${BROKERS[i]} 使用率 ${usePct.toFixed(1)}%（閾值 ${thresh}%），剩餘水位 ${fmtW(remain)} 元</div>
+        <div class="alert-title">${isDanger?'借貸資金已全數投入！':'資金使用率警示'}</div>
+        <div class="alert-desc">${BROKERS[i]} 使用率 ${usePct.toFixed(1)}%（閾值 ${thresh}%），剩餘 ${fmtW(remain)} 元</div>
       </div>`;
     dot.classList.add('show');
-    pushNotif(BROKERS[i], usePct, thresh, remain);
-  } else { banner.className='alert-banner'; dot.classList.remove('show'); }
+    pushNotif(BROKERS[i],usePct,thresh,remain);
+  }else{banner.className='alert-banner';dot.classList.remove('show');}
 }
 
-function saveAndCalc(i){ saveData(); calc(i); }
+function saveAndCalc(i){saveData();calc(i);}
 
 /* ── Notification ── */
-function pushNotif(broker, val, thresh, extra) {
-  if(Notification.permission!=='granted') return;
-  const k=`notif_${broker}_${Math.floor(val/5)*5}`;
-  if(sessionStorage.getItem(k)) return;
+function pushNotif(label,val,thresh,extra){
+  if(Notification.permission!=='granted')return;
+  const k=`notif_${label}_${Math.floor(val/5)*5}`;
+  if(sessionStorage.getItem(k))return;
   sessionStorage.setItem(k,'1');
-  const isMaint = broker.includes('維持率');
-  new Notification(`⚠️ ${broker} 警示`,{
-    body: isMaint
-      ? `維持率 ${val.toFixed(1)}%，低於 ${thresh}% 警戒線！`
-      : `使用率 ${val.toFixed(1)}%，剩餘 ${Math.round(extra).toLocaleString()} 元`,
-    icon:'icon-192.png'
-  });
+  let body='';
+  if(label.includes('維持率')) body=`維持率 ${val.toFixed(1)}%，低於 ${thresh}% 警戒線！`;
+  else if(label.includes('到期')) body=`借貸還有 ${val} 天到期，請注意續約或還款！`;
+  else body=`使用率 ${val.toFixed(1)}%，剩餘 ${Math.round(extra).toLocaleString()} 元`;
+  new Notification(`⚠️ ${label} 警示`,{body,icon:'icon-192.png'});
 }
-function requestNotif() {
-  Notification.requestPermission().then(()=>updateNotifUI());
-}
-function updateNotifUI() {
-  const btn=$('notif-btn'), st=$('notif-status');
+function requestNotif(){Notification.requestPermission().then(()=>updateNotifUI());}
+function updateNotifUI(){
+  const btn=$('notif-btn'),st=$('notif-status');
   if(!('Notification' in window)){btn.style.display='none';st.textContent='此瀏覽器不支援通知';return;}
-  if(Notification.permission==='granted'){
-    btn.textContent='✓ 通知已開啟'; btn.className='btn-notif granted';
-    st.textContent='開啟 App 時若有警示將自動推送通知';
-  } else if(Notification.permission==='denied'){
-    btn.style.display='none'; st.textContent='通知已被封鎖，請至瀏覽器設定手動開啟';
-  } else {
-    btn.textContent='開啟通知'; st.textContent='開啟後，每次開 App 有警示時自動通知';
-  }
+  if(Notification.permission==='granted'){btn.textContent='✓ 通知已開啟';btn.className='btn-notif granted';st.textContent='有警示時將自動推送通知';}
+  else if(Notification.permission==='denied'){btn.style.display='none';st.textContent='通知已被封鎖，請至瀏覽器設定開啟';}
+  else{btn.textContent='開啟通知';st.textContent='開啟後，App 有警示時自動通知';}
 }
 
-/* ── PWA Install ── */
+/* ── PWA ── */
 let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt', e=>{
-  e.preventDefault(); deferredPrompt=e;
-  if(!localStorage.getItem('installDismissed')) $('installBanner').classList.add('show');
-});
-function installApp(){
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(()=>{deferredPrompt=null;$('installBanner').classList.remove('show');});
-}
-function dismissInstall(){
-  $('installBanner').classList.remove('show');
-  localStorage.setItem('installDismissed','1');
-}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!localStorage.getItem('installDismissed'))$('installBanner').classList.add('show');});
+function installApp(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;$('installBanner').classList.remove('show');});}
+function dismissInstall(){$('installBanner').classList.remove('show');localStorage.setItem('installDismissed','1');}
 
 /* ── Enter to add ── */
 [0,1].forEach(i=>{
@@ -847,11 +859,11 @@ function dismissInstall(){
 });
 
 /* ── Service Worker ── */
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 
 /* ── Init ── */
 loadData();
-[0,1].forEach(i=>{ render(i); calc(i); });
+[0,1].forEach(i=>{render(i);calc(i);});
 updateNotifUI();
 </script>
 </body>
