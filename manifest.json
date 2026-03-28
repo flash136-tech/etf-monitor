@@ -1,0 +1,13 @@
+{
+  "name": "質押借貸監控",
+  "short_name": "質押監控",
+  "description": "監控多券商借貸資金水位與持倉損益報酬",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#3b82f6",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
